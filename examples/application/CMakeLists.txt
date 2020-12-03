@@ -30,10 +30,10 @@ add_library(application STATIC ${_Application_Sources})
 
 target_include_directories(application PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-find_package(imgui REQUIRED)
-find_package(stb_image REQUIRED)
-find_package(ScopeGuard REQUIRED)
-target_link_libraries(application PUBLIC imgui)
+#find_package(imgui REQUIRED)
+#find_package(stb_image REQUIRED)
+#find_package(ScopeGuard REQUIRED)
+target_link_libraries(application PUBLIC imgui imgui-node-editor)
 target_link_libraries(application PRIVATE stb_image ScopeGuard)
 
 if (WIN32)
@@ -59,7 +59,7 @@ if (WIN32)
 else()
     target_include_directories(application PRIVATE ${OPENGL_INCLUDE_DIR})
 
-    find_package(gl3w REQUIRED)
+    #find_package(gl3w REQUIRED)
     target_link_libraries(application PRIVATE ${OPENGL_gl_LIBRARY} gl3w glfw)
 
     if (APPLE)

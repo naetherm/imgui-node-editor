@@ -1,16 +1,26 @@
 ## This is the CMake script that our main build pipeline uses to compile the library
 
-cmake_minimum_required(VERSION 2.8.3)
-
-# Node editor use C++14
-set(CMAKE_CXX_STANDARD            14)
-set(CMAKE_CXX_STANDARD_REQUIRED   YES)
+cmake_minimum_required(VERSION 3.12)
 
 ##################################################
 ## Project
 ##################################################
 set(CURRENT_TARGET_NAME "imgui-node-editor")
 project(${CURRENT_TARGET_NAME})
+
+# Node editor use C++14
+set(CMAKE_CXX_STANDARD            14)
+set(CMAKE_CXX_STANDARD_REQUIRED   YES)
+
+
+# Define IMGUI_NODE_EDITOR_ROOT_DIR pointing to project root directory
+get_filename_component(IMGUI_NODE_EDITOR_ROOT_DIR ${CMAKE_SOURCE_DIR} ABSOLUTE CACHE)
+
+# Point CMake where to look for module files.
+list(APPEND CMAKE_MODULE_PATH ${IMGUI_NODE_EDITOR_ROOT_DIR}/misc/cmake-modules)
+
+# Enable solution folders in Visual Studio and Folders in Xcode
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 
 ##################################################
@@ -19,6 +29,9 @@ project(${CURRENT_TARGET_NAME})
 include_directories(
 	${CMAKE_CURRENT_SOURCE_DIR}
 	${CMAKE_CURRENT_SOURCE_DIR}/external/imgui
+	${CMAKE_CURRENT_SOURCE_DIR}/external/gl3w
+	${CMAKE_CURRENT_SOURCE_DIR}/external/stb_image
+	${CMAKE_CURRENT_SOURCE_DIR}/external/ScopeGuard
 )	# The current source directory
 
 
@@ -90,3 +103,9 @@ install(FILES
 	${CMAKE_CURRENT_SOURCE_DIR}/imgui_node_editor_internal.inl
 	DESTINATION include
 )
+
+add_subdirectory(external/gl3w)
+add_subdirectory(external/imgui)
+add_subdirectory(external/ScopeGuard)
+add_subdirectory(external/stb_image)
+add_subdirectory(examples)

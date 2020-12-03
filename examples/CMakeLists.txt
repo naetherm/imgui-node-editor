@@ -1,24 +1,3 @@
-cmake_minimum_required(VERSION 3.12)
-
-project(imgui-node-editor)
-
-# Define IMGUI_NODE_EDITOR_ROOT_DIR pointing to project root directory
-get_filename_component(IMGUI_NODE_EDITOR_ROOT_DIR ${CMAKE_SOURCE_DIR}/.. ABSOLUTE CACHE)
-
-# Enable solution folders in Visual Studio and Folders in Xcode
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-
-# Point CMake where to look for module files.
-list(APPEND CMAKE_MODULE_PATH ${IMGUI_NODE_EDITOR_ROOT_DIR}/misc/cmake-modules)
-
-# Node editor use C++14
-set(CMAKE_CXX_STANDARD            14)
-set(CMAKE_CXX_STANDARD_REQUIRED   YES)
-
-
-
-
-
 # Macro that will configure an example application
 macro(add_example_executable name)
     project(${name})
@@ -33,6 +12,7 @@ macro(add_example_executable name)
     file(GLOB _Example_CommonResources CONFIGURE_DEPENDS "${IMGUI_NODE_EDITOR_ROOT_DIR}/examples/data/*")
     file(GLOB _Example_Resources CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/data/*")
     #message(FATAL_ERROR "_Example_Resources = ${_Example_Resources}")
+    link_directories(${CMAKE_CURRENT_BINARY_DIR})
 
     set(_Example_Type)
     if (WIN32)
@@ -67,9 +47,7 @@ macro(add_example_executable name)
 
     add_executable(${name} ${_Example_Type} ${_Example_Sources} ${_Example_Resources} ${_Example_CommonResources})
 
-    find_package(imgui REQUIRED)
-    find_package(imgui_node_editor REQUIRED)
-    target_link_libraries(${name} PRIVATE imgui imgui_node_editor application)
+    target_link_libraries(${name} PRIVATE imgui imgui-node-editor application)
 
     set(_ExampleBinDir ${CMAKE_BINARY_DIR}/bin)
 
